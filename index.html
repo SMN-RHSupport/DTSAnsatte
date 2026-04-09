@@ -5,92 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support - Kontakt oss</title>
     <style>
-        :root {
-            --sb1-blue: #003057;
-            --sb1-light-blue: #0072c1;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 40px 20px;
-            background-color: white;
-            color: var(--sb1-blue);
-        }
-
-        .employee-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 40px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .employee-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .image-wrapper {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-bottom: 15px;
-            background-color: #f4f4f4;
-        }
-
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .name {
-            font-size: 1.15rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .role {
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-            color: #444;
-        }
-
-        .phone {
-            font-size: 0.95rem;
-            font-weight: bold;
-            text-decoration: none;
-            color: inherit;
-            margin-bottom: 5px;
-        }
-
-        .email-link {
-            font-size: 0.95rem;
-            color: var(--sb1-light-blue);
-            text-decoration: underline;
-        }
-
-        #error-msg { text-align: center; color: red; display: none; }
+        :root { --sb1-blue: #003057; --sb1-light-blue: #0072c1; }
+        body { font-family: Arial, sans-serif; padding: 40px 20px; color: var(--sb1-blue); }
+        .employee-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 40px 20px; max-width: 1100px; margin: 0 auto; }
+        .employee-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .image-wrapper { width: 180px; height: 180px; border-radius: 50%; overflow: hidden; margin-bottom: 15px; background: #eee; }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .name { font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; }
+        .role { font-size: 0.9rem; color: #555; margin-bottom: 8px; }
+        .phone { font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; }
+        .email-link { font-size: 0.9rem; color: var(--sb1-light-blue); text-decoration: underline; }
+        #error-log { color: #cc0000; background: #fff5f5; padding: 20px; border: 1px solid #ffcccc; border-radius: 5px; margin: 20px auto; max-width: 800px; display: none; white-space: pre-wrap; font-family: monospace; }
     </style>
 </head>
 <body>
 
-    <div id="error-msg">Kunne ikke laste ansattliste. Sjekk at employees.json er riktig formatert.</div>
+    <div id="error-log"></div>
     <div class="employee-grid" id="staff-list"></div>
 
     <script>
         async function fetchStaff() {
+            const errorLog = document.getElementById('error-log');
+            const container = document.getElementById('staff-list');
+
             try {
-                // Henter data fra den separate JSON-filen
-                const response = await fetch('employees.json');
-                if (!response.ok) throw new Error('Fant ikke JSON-fil');
+                // Legger til et tilfeldig tall i URL-en for å unngå at nettleseren lagrer en gammel feil (cache)
+                const response = await fetch('employees.json?nocache=' + Math.random());
                 
-                const employees = await response.json();
-                const container = document.getElementById('staff-list');
+                if (!response.ok) {
+                    throw new Error(`Fant ikke employees.json (Status: ${response.status}). Sjekk at filnavnet er riktig på GitHub.`);
+                }
+                
+                const data = await response.text();
+                let employees;
+                
+                try {
+                    employees = JSON.parse(data);
+                } catch (jsonErr) {
+                    throw new Error(`Feil i formatet i employees.json: \n${jsonErr.message}\n\nTips: Sjekk at du ikke har glemt et komma eller et hermetegn.`);
+                }
 
                 container.innerHTML = employees.map(emp => `
                     <div class="employee-card">
@@ -105,8 +58,9 @@
                 `).join('');
 
             } catch (error) {
+                errorLog.style.display = 'block';
+                errorLog.innerText = "FEILMELDING:\n" + error.message;
                 console.error(error);
-                document.getElementById('error-msg').style.display = 'block';
             }
         }
 
