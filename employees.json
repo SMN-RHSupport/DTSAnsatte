@@ -3,35 +3,98 @@
         "name": "Karen Svingen Welde",
         "role": "Leder digitale tjenester support",
         "phone": "452 44 355",
-        "email": "karen.welde@smn.no",
+        "email": "karen.welde@smnregnskap.no",
         "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/karen-svingen-welde.jpg.thumb.1280.1280.jpg"
     },
     {
         "name": "Christoffer Gjønvik Holsæther",
         "role": "Systemrådgiver",
         "phone": "902 01 612",
-        "email": "christoffer.holsæther@smn.no",
+        "email": "christoffer.holsæther@smnregnskap.no",
         "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/christoffer-gjonvik-holsather.jpg.thumb.1280.1280.jpg"
     },
     {
         "name": "Dea Kristiansen",
         "role": "Senior systemrådgiver",
         "phone": "930 17 512",
-        "email": "dea.kristiansen@smn.no",
+        "email": "dea.kristiansen@smnregnskap.no",
         "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/dea-kristiansen.jpg.thumb.1280.1280.jpg"
     },
     {
         "name": "Edvard Moe Østerlie",
         "role": "Senior systemrådgiver",
         "phone": "950 65 461",
-        "email": "edvard.osterlie@smn.no",
+        "email": "edvard.osterlie@smnregnskap.no",
         "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/edvard-moe-osterlie.jpg.thumb.1280.1280.jpg"
+    },
+    {
+        "name": "Eivind Langmo Sandstad",
+        "role": "Senior systemrådgiver",
+        "phone": "970 90 412",
+        "email": "eivind.sandstad@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/eivind-langmo-sandstad.jpg.thumb.1280.1280.jpg"
+    },
+     {
+        "name": "Julie Therese Amundsen",
+        "role": "Endringsagent",
+        "phone": "975 78 275",
+        "email": "julie.amundsen@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/julie-amundsen.jpg.thumb.1280.1280.jpg"
+    },
+     {
+        "name": "Johannes Aalberg",
+        "role": "Senior systemrådgiver",
+        "phone": "993 95 395",
+        "email": "johannes.aalberg@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/johannes-aalberg.jpg.thumb.1280.1280.jpg"
+    },
+     {
+        "name": "Kevin Alexander Ursett",
+        "role": "Senior systemrådgiver",
+        "phone": "938 59 096",
+        "email": "Kevin.Ursett@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/kevin-alexander-ursett.jpg.thumb.1280.1280.jpg"
+    },
+     {
+        "name": "Kristina Buseth",
+        "role": "Systemansvarlig",
+        "phone": "920 87 021",
+        "email": "kristina.nygaard@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/kristina-nygaard.jpg.thumb.1280.1280.jpg"
+    },
+     {
+        "name": "Martin Alexander Mollan Vårvik-Langnes",
+        "role": "Systemrådgiver",
+        "phone": "413 82 860",
+        "email": "martin.varvik-langnes@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/foto/radgivere/martin-aleksander-varvik-langnes.jpg.thumb.1280.1280.jpg"
+    },
+    {
+        "name": "Marte Eggen Løvseth",
+        "role": "Systemrådgiver",
+        "phone": "980 19 190",
+        "email": "marte.lovseth@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/Marthe_Eggen_Lovseth.jpg.thumb.1280.1280.jpg"
+    },
+    {
+        "name": "Steffen Johansen Holmen",
+        "role": "Systemrådgiver",
+        "phone": "479 47 504",
+        "email": "steffen.holmen@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/steffen-johansen-holmen.jpg.thumb.1280.1280.jpg"
     },
     {
         "name": "Ådne Garmannvik Johansen",
         "role": "Systemrådgiver",
         "phone": "909 15 712",
-        "email": "adne.johansen@smn.no",
-        "img": "https://www.sparebank1.no/content/dam/SB1/foto/ansatte/smn/214341.jpg.thumb.1280.1280.png"
+        "email": "adne.johansen@smnregnskap.no",
+        "img": "https://www.sparebank1.no/content/dam/SB1/bank/smn/regnskapshuset/Ansatte/adne-garmannvik-johansen.jpg.thumb.1280.1280.jpg"
+    },
+    {
+        "name": "Kine",
+        "role": "Systemrådgiver",
+        "phone": "xxxx",
+        "email": "@smn.no",
+        "img": ""
     }
 ]
