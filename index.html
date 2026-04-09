@@ -3,164 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Team - SpareBank 1 SMN</title>
+    <title>Support - Kontakt oss</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #fff; margin: 0; padding: 20px; }
-        
-        .employee-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 40px 20px; 
-            max-width: 1100px; 
-            margin: 0 auto; 
+        :root {
+            --sb1-blue: #003057;
+            --sb1-light-blue: #0072c1;
         }
 
-        .employee-card { 
-            text-align: center; 
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: white;
+            color: var(--sb1-blue);
+        }
+
+        .employee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 40px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .employee-card {
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
         }
 
-        .img-wrapper {
+        .image-wrapper {
             width: 180px;
             height: 180px;
             border-radius: 50%;
             overflow: hidden;
             margin-bottom: 15px;
-            background-color: #f0f0f0;
+            background-color: #f4f4f4;
         }
 
-        .employee-card img { 
-            width: 100%; 
-            height: 100%; 
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
-        .employee-card h3 { 
-            margin: 0 0 5px 0; 
-            color: #003057; 
-            font-size: 1.1rem;
-            line-height: 1.2;
+        .name {
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
         .role {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
             color: #444;
-            margin-bottom: 5px;
-            min-height: 1.2em;
         }
 
-        .phone, .email {
-            font-size: 0.9rem;
+        .phone {
+            font-size: 0.95rem;
+            font-weight: bold;
             text-decoration: none;
-            color: #003057;
-            margin-top: 2px;
+            color: inherit;
+            margin-bottom: 5px;
         }
 
-        .email {
-            color: #0072c1;
+        .email-link {
+            font-size: 0.95rem;
+            color: var(--sb1-light-blue);
             text-decoration: underline;
         }
 
-        #status { text-align: center; padding: 50px; font-weight: bold; color: #666; }
+        #error-msg { text-align: center; color: red; display: none; }
     </style>
 </head>
 <body>
 
-    <div id="status">Laster inn support-team...</div>
-    <div class="employee-grid" id="container"></div>
+    <div id="error-msg">Kunne ikke laste ansattliste. Sjekk at employees.json er riktig formatert.</div>
+    <div class="employee-grid" id="staff-list"></div>
 
     <script>
-        async function loadSupport() {
-            const targetUrl = 'https://www.sparebank1.no/nb/smn/bedrift/konsulenttjenester/digitale-tjenester.html';
-            // Vi bruker corsproxy.io som er ofte mer stabil enn allorigins
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
-            
-            const container = document.getElementById('container');
-            const status = document.getElementById('status');
-
+        async function fetchStaff() {
             try {
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error('Kunne ikke hente data fra kilden.');
+                // Henter data fra den separate JSON-filen
+                const response = await fetch('employees.json');
+                if (!response.ok) throw new Error('Fant ikke JSON-fil');
                 
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
+                const employees = await response.json();
+                const container = document.getElementById('staff-list');
 
-                // Finn alle overskrifter for å lokalisere Support-seksjonen
-                const headers = Array.from(doc.querySelectorAll('h1, h2, h3, h4'));
-                const supportHeader = headers.find(h => h.textContent.trim() === 'Support');
-                
-                if (!supportHeader) {
-                    status.innerText = "Fant ikke 'Support'-seksjonen på siden.";
-                    return;
-                }
+                container.innerHTML = employees.map(emp => `
+                    <div class="employee-card">
+                        <div class="image-wrapper">
+                            <img src="${emp.img}" alt="${emp.name}" onerror="this.src='https://www.sparebank1.no/etc.clientlibs/s1-platform/clientlibs/clientlib-site/resources/images/avatar.svg'">
+                        </div>
+                        <div class="name">${emp.name}</div>
+                        <div class="role">${emp.role}</div>
+                        <div class="phone">Tlf. ${emp.phone}</div>
+                        <a href="mailto:${emp.email}" class="email-link">e-post</a>
+                    </div>
+                `).join('');
 
-                // Support-ansatte ligger i den første .adviser-list__list ETTER "Support"-overskriften
-                let currentElement = supportHeader;
-                let listContainer = null;
-
-                // Vi blar nedover i HTML-en fra "Support" for å finne listen
-                while (currentElement && !listContainer) {
-                    currentElement = currentElement.nextElementSibling || currentElement.parentElement;
-                    if (currentElement && currentElement.classList && currentElement.classList.contains('adviser-list__list')) {
-                        listContainer = currentElement;
-                    } else if (currentElement) {
-                        listContainer = currentElement.querySelector('.adviser-list__list');
-                    }
-                }
-
-                const employees = listContainer ? listContainer.querySelectorAll('.adviser') : [];
-
-                if (employees.length === 0) {
-                    status.innerText = "Ingen ansatte funnet i support-listen.";
-                    return;
-                }
-
-                status.style.display = 'none';
-
-                employees.forEach(emp => {
-                    const name = emp.querySelector('h3')?.innerText.trim() || '';
-                    const role = emp.querySelector('.adviser__title, p:nth-of-type(1)')?.innerText.trim() || '';
-                    
-                    // Telefonnummer - leter etter tekst som inneholder "Tlf"
-                    const paragraphs = Array.from(emp.querySelectorAll('p'));
-                    const phonePara = paragraphs.find(p => p.innerText.includes('Tlf'));
-                    const phone = phonePara ? phonePara.innerText.trim() : '';
-
-                    // E-post link
-                    const emailLink = emp.querySelector('a[href^="mailto:"]');
-                    
-                    // Bilde
-                    let imgSrc = emp.querySelector('img')?.getAttribute('src') || '';
-                    if (imgSrc && !imgSrc.startsWith('http')) {
-                        imgSrc = 'https://www.sparebank1.no' + imgSrc;
-                    }
-
-                    if (name) {
-                        const card = document.createElement('div');
-                        card.className = 'employee-card';
-                        card.innerHTML = `
-                            <div class="img-wrapper">
-                                <img src="${imgSrc}" alt="${name}" onerror="this.src='https://www.sparebank1.no/etc.clientlibs/s1-platform/clientlibs/clientlib-site/resources/images/avatar.svg'">
-                            </div>
-                            <h3>${name}</h3>
-                            <div class="role">${role}</div>
-                            ${phone ? `<div class="phone">${phone}</div>` : ''}
-                            ${emailLink ? `<a class="email" href="${emailLink.href}">e-post</a>` : ''}
-                        `;
-                        container.appendChild(card);
-                    }
-                });
-
-            } catch (err) {
-                status.innerText = "Feil: " + err.message + ". Prøv å deaktivere AdBlocker hvis den er på.";
-                console.error(err);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('error-msg').style.display = 'block';
             }
         }
 
-        loadSupport();
+        fetchStaff();
     </script>
 </body>
 </html>
